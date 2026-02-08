@@ -129,7 +129,7 @@ Edit `.env` to adjust these settings:
 COINS=BTC,ETH,BNB,SOL,TRX,DOGE,ADA
 
 # Scraping interval in seconds (default: 60)
-SCRAPE_INTERVAL=60
+SCRAPE_INTERVAL=10
 
 # Minimum profit to trigger notification (default: 0.5%)
 MIN_PROFIT_THRESHOLD=0.5
@@ -166,6 +166,7 @@ Expected output:
  ✔ Container crypto-arbitrage-monitor-airflow-webserver-1  Running
  ✔ Container crypto-arbitrage-monitor-airflow-scheduler-1  Running
  ✔ Container crypto-arbitrage-monitor-dashboard-1          Running
+ ✔ Container crypto-arbitrage-monitor-grafana-1            Running
 ```
 
 ### Step 2: Wait for Initialization
@@ -207,9 +208,10 @@ DATABASE INITIALIZATION
 
 ### 1. **Dashboard** (Main Interface)
 
-- **URL**: http://localhost:8050
+- **Plotly Dash**: http://localhost:8050
+- **Grafana**: http://localhost:3000 (User: `admin`, Password: `admin`)
 - **Description**: Interactive visualization dashboard
-- **Auto-refresh**: Every 10 seconds
+- **Auto-refresh**: Every 5-10 seconds
 
 ### 2. **Airflow UI** (Workflow Management)
 

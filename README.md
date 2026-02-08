@@ -9,7 +9,9 @@ A comprehensive, Dockerized cryptocurrency arbitrage monitoring system that trac
 - **Arbitrage Detection**: Automatically calculates profit opportunities after exchange fees
 - **Smart Notifications**: Telegram alerts for profitable opportunities
 - **Historical Analysis**: Long-term data storage with TimescaleDB
-- **Beautiful Dashboard**: Interactive Plotly Dash visualization with auto-refresh
+- **Beautiful Dashboards**: 
+  - **Plotly Dash**: Interactive real-time comparison
+  - **Grafana**: Advanced historical analysis and customizable panels
 - **Workflow Orchestration**: Airflow-powered scheduling and task management
 - **Fully Dockerized**: One-command deployment with Docker Compose
 
@@ -38,7 +40,7 @@ graph TB
     E --> F[TimescaleDB]
     E --> G[Telegram Notifier]
     D --> H[Plotly Dash Dashboard]
-    F --> H
+    F --> I[Grafana Dashboard]
 ```
 
 ## 🛠️ Technology Stack
@@ -47,8 +49,10 @@ graph TB
 - **Workflow**: Apache Airflow
 - **Databases**: Redis (cache), TimescaleDB (time-series)
 - **APIs**: Bybit SDK, Binance Public API, KuCoin Public API
-- **Data Processing**: Pandas
-- **Visualization**: Plotly Dash with Bootstrap
+- **Data Processing**: Pandas, SQL
+- **Visualization**: 
+  - Plotly Dash with Bootstrap
+  - Grafana
 - **Notifications**: python-telegram-bot
 - **Containerization**: Docker & Docker Compose
 
@@ -65,8 +69,11 @@ D:\crypto-arbitrage-monitor\
 ├── INSTALL.md                 # Installation guide
 ├── airflow/
 │   ├── dags/
-│   │   └── arbitrage_monitor_dag.py  # Main Airflow workflow
+│   │   └── arbitrage_monitor_dag.py
 │   └── logs/
+├── grafana/                   # Grafana Configuration
+│   ├── dashboards/            # Dashboard JSON models
+│   └── provisioning/          # Datasource config
 ├── src/
 │   ├── config.py              # Configuration management
 │   ├── models.py              # Data models
@@ -108,8 +115,9 @@ docker-compose up -d
 
 ### Access Points
 
-- **Dashboard**: http://localhost:8050
-- **Airflow UI**: http://localhost:8080 (username: `admin`, password: `admin`)
+- **Plotly Dashboard**: http://localhost:8050
+- **Grafana Dashboard**: http://localhost:3000 (User: `admin`, Password: `admin`)
+- **Airflow UI**: http://localhost:8080 (User: `admin`, Password: `admin`)
 - **TimescaleDB**: localhost:5432
 - **Redis**: localhost:6379
 
@@ -118,18 +126,18 @@ docker-compose up -d
 Edit `.env` file to configure:
 
 ```bash
-# Bybit API (already configured with your credentials)
-BYBIT_API_KEY=kOgFNe6wab1hBKezE7
-BYBIT_API_SECRET=123456
+# Bybit API (already configured)
+BYBIT_API_KEY=...
+BYBIT_API_SECRET=...
 
 # Telegram (configure to enable notifications)
 TELEGRAM_BOT_TOKEN=your_bot_token
-TELEGRAM_CHAT_ID=your_chat_id
+TELEGRAM_CHAT_ID=-100123456789  # Note: Must be numeric Group ID!
 
 # Monitoring settings
 COINS=BTC,ETH,BNB,SOL,TRX,DOGE,ADA
-SCRAPE_INTERVAL=60
-MIN_PROFIT_THRESHOLD=0.5
+SCRAPE_INTERVAL=10        # 10s for real-time updates
+MIN_PROFIT_THRESHOLD=0.05 # 5% minimum profit
 
 # Exchange fees (%)
 BYBIT_FEE=0.1
@@ -162,16 +170,20 @@ KUCOIN_FEE=0.1
 
 ## 📊 Dashboard Features
 
-![Dashboard Preview](https://via.placeholder.com/800x400?text=Dashboard+Preview)
-
-The interactive dashboard includes:
-
+### 1. Plotly Dash (Standard)
+*Port 8050* - Best for quick, real-time checks.
 - **Real-Time Stats**: Total opportunities, best profit, active pairs
 - **Opportunities Table**: Top 20 arbitrage opportunities with color coding
 - **Price Comparison**: Bar charts comparing prices across exchanges
 - **Arbitrage Heatmap**: Visual representation of profit margins
-- **Profit Scatter Plot**: Profitability vs. price difference analysis
-- **Price History**: 24-hour time series charts
+
+### 2. Grafana (Advanced)
+*Port 3000* - Best for deep analysis and customization.
+- **Top Opportunities**: SQL-calculated table of best spreads (>0.05%)
+- **Global Price Monitor**: Real-time price pivot table for all 7 coins
+- **Advanced Charts**: Customizable time-series, histograms, and heatmaps
+- **Fully Editable**: Drag-and-drop UI to create your own panels
+- **Persistent Storage**: Changes saved to database (no file editing needed)
 
 ## 🔔 Notifications
 
