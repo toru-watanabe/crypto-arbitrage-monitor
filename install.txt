@@ -1,0 +1,13 @@
+cd D:\crypto-arbitrage-monitor
+docker-compose up -d --build
+
+# Wait for containers to be healthy (check with):
+docker-compose ps
+
+# Then initialize the database:
+docker-compose exec dashboard python scripts/setup_databases.py
+# View logs to confirm everything is working
+docker-compose logs -f
+
+Dashboard: http://localhost:8050
+Airflow: http://localhost:8080 (admin/admin)

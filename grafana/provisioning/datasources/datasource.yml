@@ -1,0 +1,17 @@
+apiVersion: 1
+
+datasources:
+  - name: TimescaleDB
+    type: postgres
+    uid: TimescaleDB
+    url: timescaledb:5432
+    database: arbitrage_monitor
+    user: postgres
+    secureJsonData:
+      password: postgres123
+    jsonData:
+      sslmode: "disable"
+      postgresVersion: 1200 # PostgreSQL 12+
+      timescaledb: true
+    isDefault: true
+    editable: true
