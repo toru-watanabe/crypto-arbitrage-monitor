@@ -1,4 +1,4 @@
-# 💰 Crypto Arbitrage Monitor
+# Crypto Arbitrage Monitor
 
 A comprehensive, Dockerized cryptocurrency arbitrage monitoring system that tracks price differences across multiple exchanges (Bybit, Binance, KuCoin) and identifies profitable trading opportunities in real-time.
 
